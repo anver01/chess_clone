@@ -12,6 +12,7 @@ import wq from '../assets/pieces/wq.svg'
 import wk from '../assets/pieces/wk.svg'
 import wb from '../assets/pieces/wb.svg'
 import Piece from './Piece';
+import placeAudio from '../assets/piece_place.mp3'
 
 interface MoveListProps {
   [key:string]: Array<Array<number>>
@@ -68,8 +69,8 @@ function Board({gameState, setGameState}:BoardProps): ReactNode {
         const temp = [...prev]
         moves.forEach((move:Array<number>) => {
           const [nr, nc] = move
-          if(nr === -2 && nc === 0){
-            return;
+          if(nr === -2 && nc === 0 && !(prow===1 || prow === 6)){
+            return
           }
           if(prow+nr < 8 && pcol+nc < 8 && temp[prow+nr][pcol+nc] === null){
             temp[prow+nr][pcol+nc] = 'dot'
@@ -95,6 +96,7 @@ function Board({gameState, setGameState}:BoardProps): ReactNode {
       temp[or][oc] = null
       setBoardState(temp)
       removeDotsAndPieceSelect()
+      new Audio(placeAudio).play()
     }
 
   }

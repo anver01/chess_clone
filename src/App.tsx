@@ -8,7 +8,7 @@ function App(): ReactNode {
     <div className='w-full m-auto p-8'>
       <h1 className='font-semibold text-6xl text-center'>Chess</h1>
       <Board gameState={gameState} setGameState={setGameState} />
-      <p className='text-center mt-8'>I was able to implement basic game movements. I was also able to implement piece specific movement.</p>
+      <p className='text-center mt-8'>I was able to implement basic game movements. I was also able to implement piece specific movement. Click on a piece to select it and move.</p>
     </div>
   )
 }
