@@ -13,7 +13,11 @@ import wk from '../assets/pieces/wk.svg'
 import wb from '../assets/pieces/wb.svg'
 import Piece from './Piece';
 
-const moveList = {
+interface MoveListProps {
+  [key:string]: Array<Array<number>>
+}
+
+const moveList:MoveListProps = {
   'wp': [[-2, 0], [-1, 0]],
   'wr': [[1, 0], [0, 1], [-1, 0], [0, -1]],
   'wn': [[2, 1], [2, -1], [-2, 1], [-2, -1]],
@@ -30,7 +34,7 @@ const moveList = {
 
 interface BoardProps {
   gameState: number,
-  setGameState: (state:number) => void
+  setGameState: (stateUpdater: (prev: number) => number) => void
 }
 
 function Board({gameState, setGameState}:BoardProps): ReactNode {
@@ -55,9 +59,9 @@ function Board({gameState, setGameState}:BoardProps): ReactNode {
 
   useEffect(() => {
     if(pieceSelect.length){
-      const pt:string = pieceSelect[0]
-      const prow:number = pieceSelect[1]
-      const pcol:number = pieceSelect[2]
+      const pt:string = pieceSelect[0] as string
+      const prow:number = pieceSelect[1] as number
+      const pcol:number = pieceSelect[2] as number
       const moves:Array<Array<number>> = moveList[pt]
       const dots:Array<Array<number>> = []
       setBoardState(prev => {
