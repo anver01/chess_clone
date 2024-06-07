@@ -1,16 +1,4 @@
 import {ReactNode, useEffect, useState} from 'react';
-import br from '../assets/pieces/br.svg'
-import bn from '../assets/pieces/bn.svg'
-import bb from '../assets/pieces/bb.svg'
-import bq from '../assets/pieces/bq.svg'
-import bk from '../assets/pieces/bk.svg'
-import bp from '../assets/pieces/bp.svg'
-import wp from '../assets/pieces/wp.svg'
-import wr from '../assets/pieces/wr.svg'
-import wn from '../assets/pieces/wn.svg'
-import wq from '../assets/pieces/wq.svg'
-import wk from '../assets/pieces/wk.svg'
-import wb from '../assets/pieces/wb.svg'
 import Piece from './Piece';
 import placeAudio from '../assets/piece_place.mp3'
 
@@ -32,7 +20,6 @@ const moveList:MoveListProps = {
   'bq': [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [0, 1], [-1, 0], [0, -1]],
   'bk': [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [0, 1], [-1, 0], [0, -1]]
 }
-
 interface BoardProps {
   gameState: number,
   setGameState: (stateUpdater: (prev: number) => number) => void
@@ -44,14 +31,14 @@ function Board({gameState, setGameState}:BoardProps): ReactNode {
   const [dotLocs, setDotLocs] = useState<Array<Array<number>>>([])
 
   const initialBoardState = [
-    [br, bn, bb, bq, bk, bb, bn, br],
-    [bp, bp, bp, bp, bp, bp, bp, bp],
+    ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
+    ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
-    [wp, wp, wp, wp, wp, wp, wp, wp],
-    [wr, wn, wb, wq, wk, wb, wn, wr],
+    ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
+    ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr'],
   ]
 
   useEffect(() => {
@@ -143,7 +130,7 @@ function Board({gameState, setGameState}:BoardProps): ReactNode {
                   {col && col==='dot' && (
                     <div className='h-3 w-3 rounded-full bg-black opacity-30' />
                   )}
-                  {col && col!=='dot' && <Piece src={col} r={rkey} c={ckey} pieceSelect={pieceSelect} handlePieceSelect={handlePieceSelect} />}
+                  {col && col!=='dot' && <Piece type={col} r={rkey} c={ckey} pieceSelect={pieceSelect} handlePieceSelect={handlePieceSelect} />}
                 </div>
               ))}
             </div>
