@@ -1,25 +1,8 @@
 import {ReactNode, useEffect, useState} from 'react';
 import Piece from './Piece';
 import placeAudio from '../assets/piece_place.mp3'
+import {MoveGenerator} from '../utils/MoveGenerator'
 
-interface MoveListProps {
-  [key:string]: Array<Array<number>>
-}
-
-const moveList:MoveListProps = {
-  'wp': [[-2, 0], [-1, 0]],
-  'wr': [[1, 0], [0, 1], [-1, 0], [0, -1]],
-  'wn': [[2, 1], [2, -1], [-2, 1], [-2, -1]],
-  'wb': [[1, 1], [1, -1], [-1, 1], [-1, -1]],
-  'wq': [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [0, 1], [-1, 0], [0, -1]],
-  'wk': [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [0, 1], [-1, 0], [0, -1]],
-  'bp': [[2, 0], [1, 0]],
-  'br': [[1, 0], [0, 1], [-1, 0], [0, -1]],
-  'bn': [[2, 1], [2, -1], [-2, 1], [-2, -1]],
-  'bb': [[1, 1], [1, -1], [-1, 1], [-1, -1]],
-  'bq': [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [0, 1], [-1, 0], [0, -1]],
-  'bk': [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [0, 1], [-1, 0], [0, -1]]
-}
 interface BoardProps {
   gameState: number,
   setGameState: (stateUpdater: (prev: number) => number) => void
@@ -45,26 +28,30 @@ function Board({gameState, setGameState}:BoardProps): ReactNode {
     setBoardState(initialBoardState)
   }, [])
 
+  const PieceTypeId:{[key:string]: string} = {
+    'p': 'pawn',
+    'r': 'rook',
+    'n': 'knight',
+    'b': 'bishop',
+    'q': 'queen',
+    'k': 'king'
+  }
+
   useEffect(() => {
     if(pieceSelect.length){
       const pt:string = pieceSelect[0] as string
       const prow:number = pieceSelect[1] as number
       const pcol:number = pieceSelect[2] as number
-      const moves:Array<Array<number>> = moveList[pt]
+      const moves:Array<Array<number>> = MoveGenerator(pt[0], PieceTypeId[pt[1]], prow, pcol, boardState)
       const dots:Array<Array<number>> = []
       setBoardState(prev => {
         const temp = [...prev]
         moves.forEach((move:Array<number>) => {
           const [nr, nc] = move
-          if(nr === -2 && nc === 0 && !(prow===1 || prow === 6)){
-            return
-          }
-          if(prow+nr < 8 && pcol+nc < 8 && temp[prow+nr][pcol+nc] === null){
-            temp[prow+nr][pcol+nc] = 'dot'
-            dots.push([prow+nr, pcol+nc])
-          } else {
-            return temp
-          }
+          const temp = [...prev]
+          temp[nr][nc] = 'dot'
+          dots.push([nr, nc])
+          return temp
         });
         return temp
       })

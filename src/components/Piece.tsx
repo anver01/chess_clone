@@ -29,7 +29,7 @@ function Piece({type, r, c, pieceSelect, handlePieceSelect}: PieceProps):ReactNo
   const selected = pieceSelect[1] === r && pieceSelect[2] === c
 
   return (
-    <span onClick={() => handlePieceSelect([type, r, c])} className={`${selected ? 'bg-red-200' : ''}`}>
+    <span onClick={() => handlePieceSelect([type, r, c])} className={`${selected ? 'bg-red-200 rounded-full' : ''}`}>
       <img src={pieceList[type]} alt={type} />
     </span>
   )
