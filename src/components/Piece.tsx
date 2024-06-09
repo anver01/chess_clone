@@ -13,11 +13,13 @@ import wk from '../assets/pieces/wk.svg'
 import wb from '../assets/pieces/wb.svg'
 
 interface PieceProps {
+  display?: boolean
   type: string,
-  r: number,
-  c: number,
-  handlePieceSelect: (pieceInfo:Array<string|number>) => void,
-  pieceSelect: Array<string|number>
+  r?: number,
+  c?: number,
+  handlePieceSelect?: (pieceInfo:Array<string|number>) => void,
+  pieceSelect?: Array<string|number>,
+  turn?: 1 | 0
 }
 
 const pieceList:{[type:string]: string} = {
@@ -25,11 +27,23 @@ const pieceList:{[type:string]: string} = {
   'wr': wr, 'wn': wn, 'wb': wb, 'wq': wq, 'wk': wk, 'wp': wp
 }
 
-function Piece({type, r, c, pieceSelect, handlePieceSelect}: PieceProps):ReactNode {
-  const selected = pieceSelect[1] === r && pieceSelect[2] === c
+const TurnId: {[key: number]: string} = {
+  0: 'w',
+  1: 'b'
+}
 
+function Piece({display=false, type, r, c, pieceSelect, handlePieceSelect, turn}: PieceProps):ReactNode {
+  const selected = !display && !!pieceSelect?.length &&  pieceSelect[1] === r && pieceSelect[2] === c
+
+  const handleClick = () => {
+    if (!display && handlePieceSelect && r !== undefined && c !== undefined && turn !== undefined && TurnId[turn] === type[0]){
+      handlePieceSelect([type, r, c])
+    }
+  }
+
+  // onClick={!display && handlePieceSelect && r && c ? () => handlePieceSelect([type, r, c]) : undefined}
   return (
-    <span onClick={() => handlePieceSelect([type, r, c])} className={`${selected ? 'bg-red-200 rounded-full' : ''}`}>
+    <span onClick={handleClick} className={`${selected ? 'bg-red-200 rounded-full' : ''}`}>
       <img src={pieceList[type]} alt={type} />
     </span>
   )
